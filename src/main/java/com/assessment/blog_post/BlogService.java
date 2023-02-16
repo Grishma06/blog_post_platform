@@ -1,34 +1,44 @@
 package com.assessment.blog_post;
 
+import com.assessment.blog_post.exception.AlreadyExistException;
+import com.assessment.blog_post.exception.NoBlogFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BlogService {
-    public List<Blog> readAllBlogs() {
-        return null;
-    }
 
-    public Blog addBlogs(Blog blog) {
-
-        return blog;
-    }
-
+    @Autowired
+    private BlogRepository repository;
 
     public List<Blog> viewBlogs() {
-        return null;
+        return (List<Blog>) repository.findAll();
+    }
+    public Blog addBlogs(Blog blog) throws AlreadyExistException {
+        System.out.print("************"+blog.getBlogId()+"***"+blog.getTitle());
+
+        Blog saved = repository.save(blog);
+        System.out.print("************"+saved.getBlogId());
+        return saved;
     }
 
-    public void removeBlog(int id) {
+    public Blog findByBlogId(int blogId) throws NoBlogFoundException {
+        return repository.findByBlogId(blogId);
+    }
+    public void removeBlog(int id) throws NoBlogFoundException {
+        if (repository.exists(findByBlogId(id))) {
 
+            repository.deleteById(id);
+        }
     }
 
-    public void updateBlog(int id, Blog item) {
-
+    public void updateBlog(int id, Blog blog) throws NoBlogFoundException, AlreadyExistException {
+        if (repository.exists(findByBlogId(id))) {
+            repository.updateById(id, blog);
+        }
     }
 
-    public Blog findByBlogId(int id) {
-        return null;
-    }
 }

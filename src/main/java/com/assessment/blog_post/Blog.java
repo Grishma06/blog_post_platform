@@ -1,17 +1,20 @@
 package com.assessment.blog_post;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
-
+@Entity
 public class Blog {
     private String title;
     private String content;
-
     private int blogId;
 
-    public Blog(String title, String content) {
+
+    public Blog(String title, String content, int blogId) {
         this.title = title;
         this.content = content;
+        this.blogId = blogId;
     }
 
     public String getTitle() {

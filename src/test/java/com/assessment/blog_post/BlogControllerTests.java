@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,8 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BlogController.class)
 public class BlogControllerTests {
-    Blog blog = new Blog("First", "This is original");
-    Blog newBlog = new Blog("Second", "Hello world");
+    Blog blog = new Blog("First", "This is original", 12);
+    Blog newBlog = new Blog("Second", "Hello world", 11);
 
     @Autowired
     private MockMvc mockMvc;
@@ -32,20 +31,11 @@ public class BlogControllerTests {
     private ObjectMapper objectMapper;
     @MockBean
     private BlogService service;
-    @MockBean
-    private IdGenerator idGenerator;
     private List<Blog> blogs;
 
     @BeforeEach
     private void setUp() {
         blogs = Arrays.asList(blog, newBlog);
-        int id = new Random().nextInt(1000);
-        when(idGenerator.generateId()).thenReturn(id);
-        blog.setBlogId(id);
-
-        id = new Random().nextInt(1000);
-        when(idGenerator.generateId()).thenReturn(id);
-        newBlog.setBlogId(id);
     }
 
     @Test
@@ -65,8 +55,8 @@ public class BlogControllerTests {
     }
 
     @Test
-    public void shouldBeAbleToAddItemInCart() throws Exception {
-        Blog fashionBlog = new Blog("Fashion", "fashionBlog,pants");
+    public void shouldBeAbleToSaveBlog() throws Exception {
+        Blog fashionBlog = new Blog("Fashion", "fashionBlog,pants", 13);
         when(service.addBlogs(fashionBlog))
                 .thenReturn(fashionBlog);
 
@@ -83,7 +73,7 @@ public class BlogControllerTests {
     }
 
     @Test
-    public void shouldBeAbleToDeleteItemFromCart() throws Exception {
+    public void shouldBeAbleToDeleteBlog() throws Exception {
 
         when(service.findByBlogId(blog.getBlogId()))
                 .thenReturn(blog);
@@ -96,7 +86,7 @@ public class BlogControllerTests {
     }
 
     @Test
-    public void shouldNotBeAbleToDeleteItemFromCart() throws Exception {
+    public void shouldNotBeAbleToDeleteBlog() throws Exception {
 
         when(service.findByBlogId(20))
                 .thenReturn(null);
