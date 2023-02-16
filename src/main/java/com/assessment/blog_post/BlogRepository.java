@@ -2,14 +2,10 @@ package com.assessment.blog_post;
 
 import com.assessment.blog_post.exception.AlreadyExistException;
 import com.assessment.blog_post.exception.NoBlogFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class BlogRepository {
