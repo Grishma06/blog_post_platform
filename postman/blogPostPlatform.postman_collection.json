@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "caf2f6e4-23e7-4487-929b-1f4d6892bedf",
+		"name": "blogPostPlatform",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "readBlog",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8080/library/view-blogs"
+			},
+			"response": []
+		},
+		{
+			"name": "addBlog",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"hello\",\r\n    \"content\":\"This is first blog.\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8080/library/add-blog"
+			},
+			"response": []
+		},
+		{
+			"name": "removeBlog",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://127.0.0.1:8080/library/remove-blog/99"
+			},
+			"response": []
+		},
+		{
+			"name": "editBlog",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"title\": \"hello\",\r\n        \"content\": \"another blog\",\r\n        \"blogId\": 844\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8080/library/edit-blog/844"
+			},
+			"response": []
+		}
+	]
+}
