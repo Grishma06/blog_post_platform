@@ -21,8 +21,13 @@ public class BlogController {
 
         @PostMapping("/library/add-blogs")
         private ResponseEntity<Blog> addBlogs(@RequestBody Blog blog) throws Exception {
-            Blog result = service.addBlogs(blog);
-            return ResponseEntity.status(OK).body(result);
+            try{
+                Blog result = service.addBlogs(blog);
+                return ResponseEntity.status(OK).body(result);
+            }
+            catch (AlreadyExistException exception){
+                return new ResponseEntity<>(NOT_ACCEPTABLE);
+            }
         }
 
         @GetMapping("/library/view-blogs")
@@ -32,15 +37,27 @@ public class BlogController {
 
         @DeleteMapping("/library/remove-blog/{id}")
         ResponseEntity<Void> removeBlog(@PathVariable int id) throws Exception {
-            service.removeBlog(id);
-            return new ResponseEntity<>(NO_CONTENT);
+            try {
+                service.removeBlog(id);
+                return new ResponseEntity<>(NO_CONTENT);
+            }
+            catch (NoBlogFoundException exception){
+                return new ResponseEntity<>(NOT_FOUND);
+            }
         }
 
         @PutMapping("/library/edit-blog/{id}")
         ResponseEntity<Void> updateBlog(@PathVariable int id,@RequestBody Blog blog) throws Exception {
-            System.out.println(blog);
-            service.updateBlog(id,blog);
-            return ResponseEntity.status(ACCEPTED).build();
+            try{
+                service.updateBlog(id, blog);
+                return ResponseEntity.status(ACCEPTED).build();
+            }
+            catch (NoBlogFoundException exception){
+                return new ResponseEntity<>(NOT_FOUND);
+            }
+            catch (AlreadyExistException exception){
+                return new ResponseEntity<>(NOT_ACCEPTABLE);
+            }
         }
 
     }

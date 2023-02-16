@@ -18,10 +18,7 @@ public class BlogService {
         return (List<Blog>) repository.findAll();
     }
     public Blog addBlogs(Blog blog) throws AlreadyExistException {
-        System.out.print("************"+blog.getBlogId()+"***"+blog.getTitle());
-
         Blog saved = repository.save(blog);
-        System.out.print("************"+saved.getBlogId());
         return saved;
     }
 
@@ -29,8 +26,8 @@ public class BlogService {
         return repository.findByBlogId(blogId);
     }
     public void removeBlog(int id) throws NoBlogFoundException {
-        if (repository.exists(findByBlogId(id))) {
 
+        if (repository.exists(findByBlogId(id))) {
             repository.deleteById(id);
         }
     }

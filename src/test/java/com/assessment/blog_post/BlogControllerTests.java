@@ -1,6 +1,7 @@
 package com.assessment.blog_post;
 
 
+import com.assessment.blog_post.exception.AlreadyExistException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,6 +71,22 @@ public class BlogControllerTests {
 
         verify(service).addBlogs(fashionBlog);
     }
+    @Test
+    public void shouldNotBeAbleToAddBlog() throws Exception{
+        Blog fashionBlog = new Blog("Fashion", "fashionBlog,pants", 13);
+        when(service.addBlogs(fashionBlog))
+                .thenThrow(AlreadyExistException.class);
+
+        MockHttpServletRequestBuilder mock = post("/library/add-blogs")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(fashionBlog));
+
+        mockMvc.perform(mock)
+                .andExpect(status().isNotAcceptable());
+
+        verify(service).addBlogs(fashionBlog);
+    }
 
     @Test
     public void shouldBeAbleToDeleteBlog() throws Exception {
@@ -83,17 +99,6 @@ public class BlogControllerTests {
                 .andExpect(status().isNoContent());
 
         verify(service).removeBlog(blog.getBlogId());
-    }
-
-    @Test
-    public void shouldNotBeAbleToDeleteBlog() throws Exception {
-
-        when(service.findByBlogId(20))
-                .thenReturn(null);
-
-        mockMvc.perform(delete("/library/remove-blog/20")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
     }
 
 }
